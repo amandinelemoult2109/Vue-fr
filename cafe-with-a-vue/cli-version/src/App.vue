@@ -2,22 +2,23 @@
 	<div id="app" class="app">
 		<h1>{{ restaurantName }}</h1>
 		<p class="description">
-			Bienvenue dans notre café {{ restaurantName }}! Nous sommes réputés pour
-			notre pain et nos merveilleuses pâtisseries. Faites vous plaisir dès le
-			matin ou avec un goûter réconfortant. Mais attention, vous verrez qu'il
-			est difficile de s'arrêter.
+			Bienvenue dans notre café {{ restaurantName }}! Nous sommes réputés pour notre
+			pain et nos merveilleuses pâtisseries. Faites vous plaisir dès le matin ou
+			avec un goûter réconfortant. Mais attention, vous verrez qu'il est difficile
+			de s'arrêter.
 		</p>
 
 		<section class="menu">
 			<h2>Menu</h2>
 			<MenuItem
-				v-for="item in simpleMenu"
+				v-for="(item, index) in simpleMenu"
 				:addToShoppingCart="addToShoppingCart"
 				:name="item.name"
 				:image="item.image"
 				:quantity="item.quantity"
 				:inStock="item.inStock"
 				:key="item.name"
+				:index="index"
 			/>
 		</section>
 
@@ -42,69 +43,75 @@
 </template>
 
 <script>
-import MenuItem from "./components/MenuItem"
+import MenuItem from './components/MenuItem';
 
 export default {
-	name: "App",
+	name: 'App',
 	components: {
-		MenuItem
+		MenuItem,
 	},
 	data() {
 		return {
-			address: "18 avenue du Beurre, Paris, France",
-			email: "hello@cafewithavue.bakery",
-			phone: "01 88 88 88 88",
-			restaurantName: "La belle vue",
-			shoppingCart: 0,
+			address: '18 avenue du Beurre, Paris, France',
+			email: 'hello@cafewithavue.bakery',
+			phone: '01 88 88 88 88',
+			restaurantName: 'La belle vue',
 			simpleMenu: [
 				{
-					name: "Croissant",
+					name: 'Croissant',
 					image: {
-						source: "/images/crossiant.jpg",
-						alt: "Un croissant"
+						source: '/images/crossiant.jpg',
+						alt: 'Un croissant',
 					},
 					inStock: true,
-					quantity: 1
+					quantity: 1,
 				},
 				{
-					name: "Baguette de pain",
+					name: 'Baguette de pain',
 					image: {
-						source: "/images/french-baguette.jpeg",
-						alt: "Quatre baguettes de pain"
+						source: '/images/french-baguette.jpeg',
+						alt: 'Quatre baguettes de pain',
 					},
 					inStock: true,
-					quantity: 1
+					quantity: 1,
 				},
 				{
-					name: "Éclair",
+					name: 'Éclair',
 					image: {
-						source: "/images/eclair.jpg",
-						alt: "Éclair au chocolat"
+						source: '/images/eclair.jpg',
+						alt: 'Éclair au chocolat',
 					},
 					inStock: false,
-					quantity: 1
-				}
-			]
-		}
+					quantity: 1,
+				},
+			],
+		};
 	},
 	computed: {
 		copyright() {
-			const currentYear = new Date().getFullYear()
+			const currentYear = new Date().getFullYear();
 
-			return `Copyright ${this.restaurantName} ${currentYear}`
-		}
+			return `Copyright ${this.restaurantName} ${currentYear}`;
+		},
+		shoppingCart() {
+			let total = 0;
+			this.simpleMenu.forEach(element => {
+				total += element.quantity;
+			});
+			return total;
+		},
 	},
 	methods: {
-		addToShoppingCart(amount) {
-			this.shoppingCart += amount
-		}
-	}
-}
+		addToShoppingCart(amount, index) {
+			return (this.simpleMenu[index].quantity = amount);
+		},
+	},
+};
 </script>
 
 <style lang="scss">
 #app {
-	font-family: "Avenir", Helvetica, Arial, sans-serif;
+	font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
